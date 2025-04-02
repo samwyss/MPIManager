@@ -1,0 +1,6 @@
+#ifndef MPIMANAGER_LIBRARY_H
+#define MPIMANAGER_LIBRARY_H
+
+void hello();
+
+#endif //MPIMANAGER_LIBRARY_H
