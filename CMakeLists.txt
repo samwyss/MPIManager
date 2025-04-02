@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 project(MPIManager
         VERSION 0.0.1
         LANGUAGES CXX
+        HOMEPAGE_URL https://github.com/samwyss/MPIManager
 )
 
 # compiler settings ----------------------------------------------------------------------------------------------------
@@ -32,20 +33,20 @@ set(FETCHCONTENT_QUIET OFF)
 
 find_package(MPI REQUIRED COMPONENTS CXX)
 
-#find_package(fmt QUIET)
-#if (NOT fmt_FOUND)
-#    message(STATUS "Library `{fmt}` not found. Installing locally now.")
-#    FetchContent_Declare(fmt
-#            GIT_REPOSITORY https://github.com/fmtlib/fmt.git
-#            GIT_TAG 11.1.4
-#            GIT_PROGRESS TRUE
-#            GIT_SHALLOW TRUE
-#            EXCLUDE_FROM_ALL
-#    )
-#    FetchContent_MakeAvailable(fmt)
-#else ()
-#    message(STATUS "Library `{fmt}` found on system.")
-#endif ()
+find_package(fmt QUIET)
+if (NOT fmt_FOUND)
+    message(STATUS "Library `{fmt}` not found. Installing locally now.")
+    FetchContent_Declare(fmt
+            GIT_REPOSITORY https://github.com/fmtlib/fmt.git
+            GIT_TAG 11.1.4
+            GIT_PROGRESS TRUE
+            GIT_SHALLOW TRUE
+            EXCLUDE_FROM_ALL
+    )
+    FetchContent_MakeAvailable(fmt)
+else ()
+    message(STATUS "Library `{fmt}` found on system.")
+endif ()
 
 # MPIManager setup -----------------------------------------------------------------------------------------------------
 add_library(${PROJECT_NAME} STATIC ${PROJECT_SOURCE_DIR}/src/mpimgr.cpp)
