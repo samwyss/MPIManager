@@ -11,9 +11,10 @@
 #include <vector>
 
 /*!
- * logger level enum according to the Syslog standard
+ * level enum according to the Syslog standard
  */
-enum class Level {
+enum class Level
+{
   emerg,
   alert,
   crit,
@@ -25,34 +26,31 @@ enum class Level {
 };
 
 /*!
- * logger rank enum used to specify if all ranks are to write or just rank zero
+ * rank enum used to specify if all ranks are to log or just rank zero
  */
-enum class Ranks {
+enum class Ranks
+{
   zero,
   all,
 };
 
 /*!
- *
+ * container for managing timers
  */
-struct Timer {
-  /*!
-  *
-  */
+struct Timer
+{
+  /// timer start time
   std::chrono::time_point<std::chrono::system_clock> start;
 
-  /*!
-   *
-   */
+  /// timer level
   Level level;
 
-  /*!
-   *
-   */
+  /// timer name
   std::string name;
 };
 
-class MPIManager {
+class MPIManager
+{
 public:
   /*!
    * constructs MPI environment
@@ -61,7 +59,7 @@ public:
    * @param level highest level to log
    * @param ranks ranks to log on
    */
-  MPIManager(int &argc, char **argv, Level level, Ranks ranks);
+  MPIManager(int& argc, char** argv, Level level, Ranks ranks);
 
   /*!
    * destructs MPI environment
@@ -72,24 +70,24 @@ public:
    * aborts MPI on all ranks and displays error msg at emergency level
    * @param msg error message
    */
-  void abort(const std::string &msg);
+  void abort(const std::string& msg);
 
   /*!
    * logs msg to terminal at specified level and ranks
-   * @param level Syslog level to log at
+   * @param level Syslog Level to log at
    * @param msg message to log
    */
-  void log(Level level, const std::string &msg);
+  void log(Level level, const std::string& msg);
 
   /*!
- *
- * @param level
- * @param name
- */
-  void timer_start(Level level, const std::string &name);
+   * starts a timer
+   * @param level timer level
+   * @param name timer name
+   */
+  void timer_start(Level level, const std::string& name);
 
   /*!
-   *
+   * stops most recently started timer
    */
   void timer_stop();
 
@@ -107,59 +105,60 @@ private:
    * logs msg at emergency level
    * @param msg message to log
    */
-  void log_emerg(const std::string &msg);
+  void log_emerg(const std::string& msg);
 
   /*!
    * logs msg at alert level
    * @param msg message to log
    */
-  void log_alert(const std::string &msg);
+  void log_alert(const std::string& msg);
 
   /*!
    * logs msg at critical level
    * @param msg message to log
    */
-  void log_crit(const std::string &msg);
+  void log_crit(const std::string& msg);
 
   /*!
    * logs msg at error level
    * @param msg message to log
    */
-  void log_err(const std::string &msg);
+  void log_err(const std::string& msg);
 
   /*!
    * logs msg at warning level
    * @param msg message to log
    */
-  void log_warning(const std::string &msg);
+  void log_warning(const std::string& msg);
 
   /*!
    * logs msg at notice level
    * @param msg message to log
    */
-  void log_notice(const std::string &msg);
+  void log_notice(const std::string& msg);
 
   /*!
-   *
+   * logs msg at the info level
    * @param msg
    */
-  void log_info(const std::string &msg);
+  void log_info(const std::string& msg);
 
   /*!
    * logs msg at debug level
    * @param msg message to log
    */
-  void log_debug(const std::string &msg);
+  void log_debug(const std::string& msg);
 
   /*!
-   *
-   * @param level
+   * checks to see if desired level is low enough to take action given level set in constructor
+   * @param level level to check
+   * @return boolean stating if level is low enough
    */
   [[nodiscard]] bool sufficient_level(Level level) const;
 
   /*!
-   *
-   * @return
+   * checks to see if this rank should take action given ranks set in constructor
+   * @return boolean stating if action should be taken on this rank
    */
   [[nodiscard]] bool sufficient_rank() const;
 
