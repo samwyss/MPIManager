@@ -230,14 +230,12 @@ bool MPIManager::sufficient_level(const Level level) const {
 bool MPIManager::sufficient_rank() const {
   if (Ranks::zero == ranks) {
     return 0 == rank;
-  } else {
-    return true;
   }
+  return true;
 }
 
 
-void MPIManager::timer_start(Level level,
-                             const std::string &name) {
+void MPIManager::timer_start(Level level, const std::string &name) {
   if (sufficient_rank() && sufficient_level(level)) {
     timers.emplace_back(std::chrono::high_resolution_clock::now(), level, name);
     log(level, "Timer: `" + name + "` started at: " + fmt::format(
@@ -248,10 +246,10 @@ void MPIManager::timer_start(Level level,
 void MPIManager::timer_stop() {
   if (sufficient_rank() && !timers.empty()) {
     const auto end = std::chrono::high_resolution_clock::now();
-    const auto timer = timers.back();
-    const auto duration = end - timer.start;
-    log(timer.level,
-        "Timer: `" + timer.name + "` stopped at: " + fmt::format(
+    const auto [start, level, name] = timers.back();
+    const auto duration = end - start;
+    log(level,
+        "Timer: `" + name + "` stopped at: " + fmt::format(
             fmt::runtime("{:%Y-%m-%d %H:%M:%S}"),
             end) + " with duration: " + fmt::format(
             fmt::runtime("{:%H:%M:%S}"), duration));
